@@ -3,9 +3,7 @@
     <thead>
       <tr class="bg-purple-200 border-b-2 border-gray-400">
         <th></th>
-        <th>
-          <span>Ranking</span>
-        </th>
+        <th>Ranking</th>
         <th>Name</th>
         <th>Price</th>
         <th>Market Cap</th>
@@ -14,13 +12,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="border-b border-gray-200 hover:bg-gray-100 hover:bg-orange-100">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+      <tr v-for="a in assets" :key ="a.id" class="border-b border-gray-200 hover:bg-gray-100 hover:bg-orange-100">
+        <td><img :src="`https://static.coincap.io/assets/icons/${a.symbol.toLowerCase()}@2x.png`" :alt="a.name"></td>
+        <td>#{{ a.rank}}</td>
+        <td class="capitalize">{{ a.id }}</td>
+        <td>{{ a.priceUsd }}</td>
+        <td>{{ a.marketCapUsd }}</td>
+        <td>{{ a.vwap24Hr }}</td>
         <td class="hidden sm:block"></td>
       </tr>
     </tbody>
