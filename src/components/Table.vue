@@ -12,13 +12,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="a in assets" :key ="a.id" class="border-b border-gray-200 hover:bg-gray-100 hover:bg-orange-100">
-        <td><img :src="`https://static.coincap.io/assets/icons/${a.symbol.toLowerCase()}@2x.png`" :alt="a.name"></td>
+      <tr v-for="a in assets" :key ="a.id" class="border border-gray-200 hover:bg-gray-100 hover:bg-orange-100">
+        <td><img class="w-6 h-6" :src="`https://static.coincap.io/assets/icons/${a.symbol.toLowerCase()}@2x.png`" :alt="a.name"></td>
         <td>#{{ a.rank}}</td>
         <td class="capitalize">{{ a.id }}</td>
-        <td>{{ a.priceUsd }}</td>
-        <td>{{ a.marketCapUsd }}</td>
-        <td>{{ a.vwap24Hr }}</td>
+        <td>{{ a.priceUsd | dollar }}</td>
+        <td>{{ a.marketCapUsd | dollar }}</td>
+        <td :class="a.changePercent24Hr.includes(' - ') ? 'text-red-600' : 'text-green-600' ">{{ a.changePercent24Hr | percent }}</td>
         <td class="hidden sm:block"></td>
       </tr>
     </tbody>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { dollarFilter, percentFiler } from "@/filters"
+
 export default {
   name: "Table",
 
@@ -33,6 +35,12 @@ export default {
     assets: {
       type: Array,
       default: () => []
+    }
+  }, 
+  setup() {
+    return {
+      dollarFilter, 
+      percentFilter,
     }
   }
 };
