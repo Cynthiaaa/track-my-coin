@@ -8,11 +8,19 @@
         <th>Price</th>
         <th>Market Cap</th>
         <th>Past 24h History</th>
-        <td class="hidden sm:block"></td>
+        <td class="hidden sm:block">
+          <input
+            class="bg-gray-100 focus:outline-none border-b border-gray-400 py-2 px-4 block w-full appearance-none leading-normal"
+            id="filter"
+            placeholder="Buscar..."
+            type="text"
+            v-model="filter"
+          />
+        </td>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="a in assets" :key ="a.id" class="border border-gray-200 hover:bg-gray-100 hover:bg-orange-100">
+      <tr v-for="a in filteredAssets" :key ="a.id" class="border border-gray-200 hover:bg-gray-100 hover:bg-orange-100">
         <td><img class="w-6 h-6" :src="`https://static.coincap.io/assets/icons/${a.symbol.toLowerCase()}@2x.png`" :alt="a.name"></td>
         <td>#{{ a.rank}}</td>
         <td class="capitalize hover:underline text-grey-600">
@@ -41,13 +49,30 @@ export default {
   components: {
     Button
   },
-
+  data() {
+    return{
+      filter: ''
+    }
+  },
   props: {
     assets: {
       type: Array,
       default: () => []
     }
   }, 
+  computed: {
+   filteredAssets() {
+     if(!this.filter) {
+       return this.assets
+       }
+
+       return this.assets.filter(
+        a => 
+          a.symbol.toLowerCase().includes(this.filter.toLowerCase()) ||
+          a.name.toLowerCase().includes(this.filter.toLowerCase())
+       )  
+     }
+   },
   methods: {
     goToCoin(id) {
       this.$router.push({ name:'coin-detail', params: { id }})
