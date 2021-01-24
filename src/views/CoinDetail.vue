@@ -122,6 +122,11 @@ export default {
     return this.history.reduce((a, b) => a + parseFloat(b.priceUsd), 0) / this.history.length
     }
   },
+  watch: {
+    $route() {
+      this.getCoin()
+    }
+  },
   created() {
     this.getCoin()
   }, 
