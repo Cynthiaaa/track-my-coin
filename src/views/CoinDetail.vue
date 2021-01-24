@@ -1,6 +1,9 @@
 <template>
   <div class="flex-col">
-    <template>
+    <div class="flex justify-center">
+      <bounce-loader :loading="isLoading" :color="'#68d391'" :size="100" />
+    </div>
+    <template v-if="!isLoading">
       <div class="flex flex-col sm:flex-row justify-around items-center">
         <div class="flex flex-col items-center">
           <img :src="`https://static.coincap.io/assets/icons/${asset.symbol.toLowerCase()}@2x.png`" :alt="asset.name" class="w-20 h-20 mr-5" /> 
@@ -71,6 +74,7 @@ export default {
   name: 'CoinDetail',
   data(){
     return{
+      isLoading: false,
       asset: [],
       history: []
     }
@@ -102,6 +106,8 @@ export default {
   methods: {
     getCoin() {
       const id = this.$route.params.id
+      this.isLoading = true
+      
       Promise.all([
         api.getAsset(id),
         api.getHistory(id)
@@ -110,7 +116,8 @@ export default {
         this.asset = asset
         this.history = history
       })
-
+      .finally(() => (this.isLoading =false))
+      
       api.getAsset(id)
       .then(asset => this.asset = asset)
     }
